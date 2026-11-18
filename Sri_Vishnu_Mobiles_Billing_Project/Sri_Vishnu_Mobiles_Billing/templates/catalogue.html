@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block heading %}{{title}}{% endblock %}{% block content %}
+<div class="page-actions"><div><h2>{{title}}</h2><p>Organise your product catalogue.</p></div></div>
+<div class="panel"><div class="panel-title">＋ Add {{title[:-1]}}</div><form method="post" class="inline-form"><input name="name" required placeholder="{{title[:-1]}} name"><button class="btn primary">Add {{title[:-1]}}</button></form></div>
+<div class="panel"><div class="panel-title">All {{title}}</div><div class="simple-list">{% for r in rows %}<div class="simple-row"><span>{{r.name}}</span><form method="post" action="{{url_for('delete_catalogue',kind=kind,item_id=r.id)}}"><button class="text-danger" data-confirm="Delete this entry?">Delete</button></form></div>{% else %}<div class="empty">No entries found.</div>{% endfor %}</div></div>{% endblock %}
