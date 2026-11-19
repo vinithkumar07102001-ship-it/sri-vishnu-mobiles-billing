@@ -1,7 +1,0 @@
-{% extends "base.html" %}{% block heading %}Invoice {{bill.bill_no}}{% endblock %}{% block content %}
-<div class="invoice-actions"><a class="btn" href="{{url_for('bills')}}">← Bills History</a><button class="btn primary" onclick="window.print()">Print Invoice</button></div>
-<div class="invoice" id="invoice"><div class="invoice-head"><div><div class="invoice-logo">SV</div></div><div class="invoice-shop"><h1>{{shop_name}}</h1><p>Mobiles & Electronics</p><p>Cell: {{shop_phone}}</p></div><div class="invoice-label">TAX INVOICE<br><b>{{bill.bill_no}}</b></div></div>
-<div class="invoice-meta"><div><b>Bill To</b><br>{{bill.customer_name}}<br>{{bill.phone or ''}}</div><div><b>Invoice Date</b><br>{{bill.created_at}}<br><b>Payment:</b> {{bill.payment}}</div></div>
-<table class="invoice-table"><thead><tr><th>#</th><th>Product</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead><tbody>{% for i in items %}<tr><td>{{loop.index}}</td><td>{{i.product_name}}</td><td>{{i.qty}}</td><td>₹{{'%.2f'|format(i.price)}}</td><td>₹{{'%.2f'|format(i.line_total)}}</td></tr>{% endfor %}</tbody></table>
-<div class="invoice-total"><div>Subtotal <b>₹{{'%.2f'|format(bill.subtotal)}}</b></div><div>Discount <b>₹{{'%.2f'|format(bill.discount)}}</b></div><div class="grand-total">Grand Total <b>₹{{'%.2f'|format(bill.total)}}</b></div></div>
-<div class="invoice-thanks">Thank you for shopping with us!<br><small>Goods once sold are subject to shop policy. Please retain this invoice.</small></div></div>{% endblock %}
