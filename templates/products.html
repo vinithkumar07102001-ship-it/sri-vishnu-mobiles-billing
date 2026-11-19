@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% block heading %}Products{% endblock %}{% block content %}
+<div class="page-actions"><div><h2>Product Catalogue</h2><p>Add and manage your shop products and prices.</p></div><span class="count-chip">{{ products|length }} products</span></div>
+<div class="panel"><div class="panel-title">＋ Add Product</div>
+<form method="post" class="form-grid">
+  <label>Product name<input name="name" required placeholder="e.g. Samsung A15 display"></label>
+  <label>SKU / Product code<input name="sku" placeholder="Optional unique code"></label>
+  <label>Category<select name="category_id"><option value="">Select category</option>{% for c in categories %}<option value="{{c.id}}">{{c.name}}</option>{% endfor %}</select></label>
+  <label>Brand<select name="brand_id"><option value="">Select brand</option>{% for b in brands %}<option value="{{b.id}}">{{b.name}}</option>{% endfor %}</select></label>
+  <label>Customer price (₹)<input type="number" name="price" min="0" step=".01" value="0" required></label>
+  <label>Reseller price (₹)<input type="number" name="reseller_price" min="0" step=".01" value="0"></label>
+  <label>Wholesale price (₹)<input type="number" name="wholesale_price" min="0" step=".01" value="0"></label>
+  <label>Opening stock<input type="number" name="stock" min="0" value="0" required></label>
+  <label>Low stock alert at<input type="number" name="low_stock" min="0" value="5"></label>
+  <label>IMEI (if applicable)<input name="imei"></label><label>Serial number<input name="serial_no"></label>
+  <div class="form-submit"><button class="btn primary">Save Product</button></div>
+</form></div>
+<div class="panel"><div class="panel-title">All Products</div><div class="table-wrap"><table><thead><tr><th>PRODUCT</th><th>SKU</th><th>CATEGORY / BRAND</th><th>CUSTOMER</th><th>RESELLER</th><th>WHOLESALE</th><th>STOCK</th><th></th></tr></thead><tbody>
+{% for p in products %}<tr><td><b>{{p.name}}</b>{% if p.imei %}<small class="subline">IMEI: {{p.imei}}</small>{% endif %}</td><td>{{p.sku or '-'}}</td><td>{{p.category or '-'}} / {{p.brand or '-'}}</td><td>₹{{'%.2f'|format(p.price)}}</td><td>₹{{'%.2f'|format(p.reseller_price)}}</td><td>₹{{'%.2f'|format(p.wholesale_price)}}</td><td><span class="{{'stock-low' if p.stock<=p.low_stock else 'stock-ok'}}">{{p.stock}}</span></td><td><form method="post" action="{{url_for('delete_product',pid=p.id)}}"><button class="text-danger" data-confirm="Delete this product?">Delete</button></form></td></tr>
+{% else %}<tr><td colspan="8" class="empty">No products added.</td></tr>{% endfor %}
+</tbody></table></div></div>{% endblock %}

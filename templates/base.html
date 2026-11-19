@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ shop_name }}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">SV</div>
+      <div class="brand-name">SRI VISHNU<br><span>MOBILES</span></div>
+      <small>MOBILES AND ELECTRONICS</small>
+    </div>
+    <nav>
+      <div class="nav-label">MAIN</div>
+      <a class="{{ 'active' if request.endpoint=='dashboard' else '' }}" href="{{ url_for('dashboard') }}">◉ <span>Dashboard</span></a>
+      <a class="{{ 'active' if request.endpoint=='new_bill' else '' }}" href="{{ url_for('new_bill') }}">▤ <span>New Bill</span></a>
+      <a class="{{ 'active' if request.endpoint in ['bills','invoice'] else '' }}" href="{{ url_for('bills') }}">▣ <span>Bills History</span></a>
+      <div class="nav-label">CATALOGUE</div>
+      <a class="{{ 'active' if request.endpoint=='products' else '' }}" href="{{ url_for('products') }}">▦ <span>Products</span></a>
+      <a class="{{ 'active' if request.view_args and request.view_args.get('kind')=='categories' else '' }}" href="{{ url_for('catalogue',kind='categories') }}">▦ <span>Categories</span></a>
+      <a class="{{ 'active' if request.view_args and request.view_args.get('kind')=='brands' else '' }}" href="{{ url_for('catalogue',kind='brands') }}">◆ <span>Brands</span></a>
+      <div class="nav-label">INVENTORY</div>
+      <a class="{{ 'active' if request.endpoint=='stock' else '' }}" href="{{ url_for('stock') }}">▤ <span>Stock</span></a>
+      <a class="{{ 'active' if request.endpoint=='purchases' else '' }}" href="{{ url_for('purchases') }}">▣ <span>Purchase Orders</span></a>
+      <a class="{{ 'active' if request.endpoint=='suppliers' else '' }}" href="{{ url_for('suppliers') }}">▰ <span>Suppliers</span></a>
+      <div class="nav-label">PEOPLE</div>
+      <a class="{{ 'active' if request.endpoint=='customers' else '' }}" href="{{ url_for('customers') }}">♟ <span>Customers</span></a>
+    </nav>
+    <div class="sidebar-foot">SRI VISHNU MOBILES<br><small>Cell {{ shop_phone }}</small></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div class="mobile-brand">SRI VISHNU MOBILES</div><div class="page-heading">{% block heading %}Dashboard{% endblock %}</div><div class="today">{{ now_label }}</div></header>
+    <section class="content">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}{% for category,message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}{% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </section>
+  </main>
+</div>
+<script>document.querySelectorAll('[data-confirm]').forEach(el=>el.addEventListener('click',e=>{if(!confirm(el.dataset.confirm))e.preventDefault()}));</script>
+</body></html>
